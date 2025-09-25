@@ -1,0 +1,77 @@
+[
+  {
+    "original_filename": "ecr_patched.tf",
+    "provider": "aws",
+    "patched_content": "provider \"aws\" {\n  region = \"ap-southeast-1\"\n}\nresource \"aws_ecr_repository\" \"scrooge_ecr\" {\n  name                 = \"scrooge-ecr\"\n\n  image_tag_mutability = \"IMMUTABLE\"\n\n  image_scanning_configuration {\n    scan_on_push = true\n  }\n}",
+    "severity": "MEDIUM",
+    "date_detected": "2025-09-24T15:26:37.294838",
+    "policy_compliance": {
+      "violations_detected": 1,
+      "validation_status": "FAILED",
+      "policy_file_used": "policy/deny.rego"
+    },
+    "changes_summary": {
+      "total_changes": 1,
+      "changes_detail": [
+        {
+          "type": "ADDED",
+          "content": "image_tag_mutability = \"IMMUTABLE\"",
+          "description": "Added: image_tag_mutability = \"IMMUTABLE\""
+        }
+      ]
+    },
+    "violations_analysis": {
+      "raw_violations": "The recommended change for the file \"ecr.tf\" according to the policy in policy/deny.rego is to set the image tag mutability for the ECR repository resource \"scrooge_ecr\". The policy requires that the ECR repository must have the image tag mutability explicitly set. Currently, the configuration lacks this setting."
+    }
+  },
+    {
+    "original_filename": "gcp_something.tf",
+    "provider": "gcp",
+    "patched_content": "provider \"aws\" {\n  region = \"ap-southeast-1\"\n}\nresource \"aws_ecr_repository\" \"scrooge_ecr\" {\n  name                 = \"scrooge-ecr\"\n\n  image_tag_mutability = \"IMMUTABLE\"\n\n  image_scanning_configuration {\n    scan_on_push = true\n  }\n}",
+    "severity": "MEDIUM",
+    "date_detected": "2025-09-23T15:26:37.294838",
+    "policy_compliance": {
+      "violations_detected": 1,
+      "validation_status": "FAILED",
+      "policy_file_used": "policy/deny.rego"
+    },
+    "changes_summary": {
+      "total_changes": 1,
+      "changes_detail": [
+        {
+          "type": "ADDED",
+          "content": "image_tag_mutability = \"IMMUTABLE\"",
+          "description": "Added: image_tag_mutability = \"IMMUTABLE\""
+        }
+      ]
+    },
+    "violations_analysis": {
+      "raw_violations": "The recommended change for the file \"ecr.tf\" according to the policy in policy/deny.rego is to set the image tag mutability for the ECR repository resource \"scrooge_ecr\". The policy requires that the ECR repository must have the image tag mutability explicitly set. Currently, the configuration lacks this setting."
+    }
+  },
+    {
+    "original_filename": "oracle_something.tf",
+    "provider": "oracle",
+    "patched_content": "provider \"aws\" {\n  region = \"ap-southeast-1\"\n}\nresource \"aws_ecr_repository\" \"scrooge_ecr\" {\n  name                 = \"scrooge-ecr\"\n\n  image_tag_mutability = \"IMMUTABLE\"\n\n  image_scanning_configuration {\n    scan_on_push = true\n  }\n}",
+    "severity": "MEDIUM",
+    "date_detected": "2025-09-22T15:26:37.294838",
+    "policy_compliance": {
+      "violations_detected": 1,
+      "validation_status": "FAILED",
+      "policy_file_used": "policy/deny.rego"
+    },
+    "changes_summary": {
+      "total_changes": 1,
+      "changes_detail": [
+        {
+          "type": "ADDED",
+          "content": "image_tag_mutability = \"IMMUTABLE\"",
+          "description": "Added: image_tag_mutability = \"IMMUTABLE\""
+        }
+      ]
+    },
+    "violations_analysis": {
+      "raw_violations": "The recommended change for the file \"ecr.tf\" according to the policy in policy/deny.rego is to set the image tag mutability for the ECR repository resource \"scrooge_ecr\". The policy requires that the ECR repository must have the image tag mutability explicitly set. Currently, the configuration lacks this setting."
+    }
+  }
+]
