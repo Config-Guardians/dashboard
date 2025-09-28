@@ -45,3 +45,22 @@ export const formatDate = (
 
   return new Intl.DateTimeFormat(locale, options).format(date);
 };
+
+export const formatDateTime = (
+  dateStr: string | Date,
+  locale: string = "en-US"
+): string => {
+  const date = typeof dateStr === "string" ? new Date(dateStr) : dateStr;
+
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  };
+
+  return new Intl.DateTimeFormat(locale, options).format(date);
+};

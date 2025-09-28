@@ -1,0 +1,46 @@
+networks:
+  app-dashboard:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5432:5432"
+    networks:
+      - app-dashboard
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: elestio/pgadmin:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: testuser@mail.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    networks:
+      - app-dashboard
+
+  dashboard:
+    build: .
+    container_name: dashboard
+    ports:
+      - "3000:3000"
+    environment:
+      POSTGRES_URL: postgres://user:password@postgres:5432/db
+    depends_on:
+      - postgres
+    networks:
+      - app-dashboard
+
+volumes:
+  pgdata:

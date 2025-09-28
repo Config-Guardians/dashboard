@@ -1,12 +1,15 @@
 # contains commands for local dev testing
 
 # docker
+docker compose up
+OR if running pnpm dev to edit dashboard only:
 docker network create app-dashboard
 docker run --name postgres --network app-dashboard -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -e POSTGRES_DB=db -p 5432:5432 -d postgres:latest
 docker run --name pgadmin --network app-dashboard -e PGADMIN_DEFAULT_EMAIL=testuser@mail.com -e PGADMIN_DEFAULT_PASSWORD=password -p 8080:80 -d elestio/pgadmin:latest
 
 # seeding postgres db
 1. open up localhost:3000/seed to activate the script that seeds the database.
+BELOW IS OPTIONAL
 2. open up localhost:8080 to access pgadmin. enter login credentials as above.
 3. on the left sidebar, open up servers > postgres > databases > db.
 3. on the top navbar, select object > "CREATE Script". Enter this command 'SELECT * FROM vuln_reports;' and we should see the seeded reports in the database

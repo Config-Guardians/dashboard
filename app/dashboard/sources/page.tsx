@@ -10,7 +10,7 @@ export default function SourcesPage() {
             Sources Placeholder
           </h1>
           <Image
-            src="/love_zachary.png"
+            src="/placeholder.png"
             width={600}
             height={400}
             alt="Sources placeholder"

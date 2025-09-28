@@ -12,7 +12,7 @@ export default function HomePage() {
           Welcome
         </h1>
         <p className="text-gray-600 text-center md:text-left">
-          Click here to start securing your configurations! I love Dhruv.
+          Click here to start securing your configurations!
         </p>
         <Link
           href="/dashboard"
@@ -26,11 +26,9 @@ export default function HomePage() {
       {/* Right side: image */}
       <div className="mt-8 flex justify-center md:mt-0 md:w-3/5">
         <Image
-          // src="/logo.png"
-          src="/captamerica.png"
+          src="/placeholder.png"
           width={600}
           height={400}
-          // alt="Guardians of the Configurations logo"
           alt="Placeholder"
           className="hidden md:block rounded-lg shadow-lg"
         />

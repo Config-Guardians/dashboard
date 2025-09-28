@@ -2,10 +2,9 @@
 
 export type Misconfig = {
   id: string; // database generated ID from postgres
-  provider: string;
   original_filename: string;
   patched_content: string;
-  severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL"; // placeholder, subject to changes
+  provider?: string;
   date_detected: string; // ISO datetime string
   policy_compliance: {
     violations_detected: number;
@@ -23,13 +22,41 @@ export type Misconfig = {
   violations_analysis: {
     raw_violations: string;
   };
+  validation_details: {
+    original_file_validation: string;
+    patched_file_validation: string;
+    original_tests_summary: {
+      total_tests: number;
+      passed: number;
+      warnings: number;
+      failures: number;
+      exceptions: number;
+    };
+    patched_tests_summary: {
+      total_tests: number;
+      passed: number;
+      warnings: number;
+      failures: number;
+      exceptions: number;
+    };
+  };
+  policy_details: {
+    policy_file: string;
+    specific_rule: string;
+    required_value: string;
+  };
+  timing: {
+    remediation_start_time: string;
+    remediation_end_time: string;
+    total_duration_seconds: number;
+  };
 };
 
 // for misconfiguration table view
 export type MisconfigsTable = {
   id: string;
-  provider: string;
+  patched_content: string;
+  provider?: string;
   original_filename: string;
-  severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
   date_detected: string;
 };

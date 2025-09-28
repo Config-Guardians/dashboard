@@ -10,7 +10,7 @@ export default function DashboardPage() {
             Dashboard Placeholder
           </h1>
           <Image
-            src="/captamerica.png"
+            src="/placeholder.png"
             width={600}
             height={400}
             alt="Dashboard placeholder"

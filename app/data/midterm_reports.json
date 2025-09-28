@@ -1,0 +1,52 @@
+[
+  {
+    "original_filename": "ecr.tf",
+    "patched_content": "provider \"aws\" {\n  region = \"ap-southeast-1\"\n}\nresource \"aws_ecr_repository\" \"scrooge_ecr\" {\n  name                 = \"scrooge-ecr\"\n\n  image_scanning_configuration {\n    scan_on_push = true\n  }\n  \n  image_tag_mutability = \"IMMUTABLE\"\n}",
+    "policy_compliance": {
+      "violations_detected": 1,
+      "validation_status": "FAILED",
+      "policy_file_used": "policy/deny.rego"
+    },
+    "changes_summary": {
+      "total_changes": 1,
+      "changes_detail": [
+        {
+          "type": "ADDED",
+          "content": "image_tag_mutability = \"IMMUTABLE\"",
+          "description": "Added: image_tag_mutability = \"IMMUTABLE\""
+        }
+      ]
+    },
+    "violations_analysis": {
+      "raw_violations": "The recommended change for the file \"ecr.tf\" against the policy in \"policy/deny.rego\" is to set the image tag mutability for the AWS ECR repository resource \"scrooge_ecr\". The current configuration is missing this setting, which caused the policy check to fail.\n\nYou should add the image_tag_mutability attribute to the aws_ecr_repository resource, for example:\n\n```hcl\nresource \"aws_ecr_repository\" \"scrooge_ecr\" {\n  name                 = \"scrooge-ecr\"\n\n  image_scanning_configuration {\n    scan_on_push = true\n  }\n  \n  image_tag_mutability = \"MUTABLE\"  # or \"IMMUTABLE\" depending on your requirements\n}\n```\n\nThis change will make the configuration comply with the policy."
+    },
+    "validation_details": {
+      "original_file_validation": "\u001b[31mFAIL\u001b[0m - tmp/ecr.tf - main - ECR repository scrooge_ecr does not have image tag mutability set\n\n\u001b[31m4 tests, 3 passed, 0 warnings, 1 failure, 0 exceptions\u001b[0m\n",
+      "patched_file_validation": "\n\u001b[32m4 tests, 4 passed, 0 warnings, 0 failures, 0 exceptions\u001b[0m\n",
+      "original_tests_summary": {
+        "total_tests": 4,
+        "passed": 3,
+        "warnings": 0,
+        "failures": 1,
+        "exceptions": 0
+      },
+      "patched_tests_summary": {
+        "total_tests": 4,
+        "passed": 4,
+        "warnings": 0,
+        "failures": 0,
+        "exceptions": 0
+      }
+    },
+    "policy_details": {
+      "policy_file": "policy/deny.rego",
+      "specific_rule": "ECR repository must have image tag mutability set",
+      "required_value": "IMMUTABLE"
+    },
+    "timing": {
+      "remediation_start_time": "2025-09-26T14:27:01.272837Z",
+      "remediation_end_time": "2025-09-26T14:27:02.986598Z",
+      "total_duration_seconds": 1.71
+    }
+  }
+]

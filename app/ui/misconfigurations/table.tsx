@@ -29,7 +29,7 @@ export default async function MisconfigsTable({
                   <div>
                     <div className="mb-2 flex items-center">
                       <Image
-                        src={`/providers/${misconfig.provider.toLowerCase()}.png`}
+                        src={`/providers/${(misconfig.provider ?? "default").toLowerCase()}.png`}
                         className="rounded-full"
                         width={50}
                         height={50}
@@ -44,9 +44,9 @@ export default async function MisconfigsTable({
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
-                    <p className="text-sm text-gray-500">
+                    {/* <p className="text-sm text-gray-500">
                       {misconfig.severity}
-                    </p>
+                    </p> */}
                     <p>{formatDate(misconfig.date_detected)}</p>
                     <p className="text-sm text-gray-500">{misconfig.id}</p>
                   </div>
@@ -67,9 +67,9 @@ export default async function MisconfigsTable({
                 <th scope="col" className="px-3 py-5 font-medium">
                   Resource
                 </th>
-                <th scope="col" className="px-3 py-5 font-medium">
+                {/* <th scope="col" className="px-3 py-5 font-medium">
                   Severity
-                </th>
+                </th> */}
                 <th scope="col" className="px-3 py-5 font-medium">
                   Misconfiguration ID
                 </th>
@@ -90,7 +90,7 @@ export default async function MisconfigsTable({
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
                       <Image
-                        src={`/providers/${misconfig.provider.toLowerCase()}.png`}
+                        src={`/providers/${(misconfig.provider ?? "default").toLowerCase()}.png`}
                         className="rounded-full"
                         width={50}
                         height={50}
@@ -102,9 +102,9 @@ export default async function MisconfigsTable({
                   <td className="whitespace-nowrap px-3 py-3">
                     {misconfig.original_filename}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
+                  {/* <td className="whitespace-nowrap px-3 py-3">
                     {misconfig.severity}
-                  </td>
+                  </td> */}
                   <td className="whitespace-nowrap px-3 py-3">
                     {misconfig.id}
                   </td>
