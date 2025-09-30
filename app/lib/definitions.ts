@@ -42,8 +42,7 @@ export type Misconfig = {
   };
   policy_details: {
     policy_file: string;
-    specific_rule: string;
-    required_value: string;
+    specific_rules: string[];
   };
   timing: {
     remediation_start_time: string;

@@ -1,0 +1,59 @@
+[
+  {
+    "original_filename": "s3.tf",
+    "patched_content": "# Create a secure test bucket for drift application:\n\nresource \"random_id\" \"suffix\" {\n    byte_length = 4\n}\n\nresource \"aws_s3_bucket\" \"test\" {\n    bucket = \"${var.project_prefix}-test-bucket-${random_id.suffix.hex}\"\n    force_destroy = var.test_force_destroy\n    tags = var.tags\n}\n\n# Enable default encryption using AES256\nresource \"aws_s3_bucket_server_side_encryption_configuration\" \"test\" {\n    bucket = aws_s3_bucket.test.id\n    rule {\n        apply_server_side_encryption_by_default {\n            sse_algorithm = \"AES256\"\n        }\n    }\n}\n\n# Enable versioning on the bucket\nresource \"aws_s3_bucket_versioning\" \"test\" {\n    bucket = aws_s3_bucket.test.id\n    versioning_configuration {\n        status = \"Enabled\"\n    }\n}\n\n# Block public access to the bucket\nresource \"aws_s3_bucket_public_access_block\" \"test\" {\n    bucket = aws_s3_bucket.test.id\n    block_public_acls       = true\n    ignore_public_acls      = true\n    block_public_policy     = true\n    restrict_public_buckets = true\n}",
+    "policy_compliance": {
+      "violations_detected": 2,
+      "validation_status": "FAILED",
+      "policy_file_used": "policy/deny-s3.rego"
+    },
+    "changes_summary": {
+      "total_changes": 2,
+      "changes_detail": [
+        {
+          "type": "ADDED",
+          "content": "block_public_acls       = true",
+          "description": "Added: block_public_acls       = true"
+        },
+        {
+          "type": "ADDED",
+          "content": "block_public_policy     = true",
+          "description": "Added: block_public_policy     = true"
+        }
+      ]
+    },
+    "violations_analysis": {
+      "raw_violations": "\u001b[31mFAIL\u001b[0m - tmp/s3.tf - main - S3 bucket test does not block public acls\n\u001b[31mFAIL\u001b[0m - tmp/s3.tf - main - S3 bucket test does not block public policy\n\n\u001b[31m6 tests, 4 passed, 0 warnings, 2 failures, 0 exceptions\u001b[0m\n"
+    },
+    "validation_details": {
+      "original_file_validation": "\u001b[31mFAIL\u001b[0m - tmp/s3.tf - main - S3 bucket test does not block public acls\n\u001b[31mFAIL\u001b[0m - tmp/s3.tf - main - S3 bucket test does not block public policy\n\n\u001b[31m6 tests, 4 passed, 0 warnings, 2 failures, 0 exceptions\u001b[0m\n",
+      "patched_file_validation": "\n\u001b[32m6 tests, 6 passed, 0 warnings, 0 failures, 0 exceptions\u001b[0m\n",
+      "original_tests_summary": {
+        "total_tests": 6,
+        "passed": 4,
+        "warnings": 0,
+        "failures": 2,
+        "exceptions": 0
+      },
+      "patched_tests_summary": {
+        "total_tests": 6,
+        "passed": 6,
+        "warnings": 0,
+        "failures": 0,
+        "exceptions": 0
+      }
+    },
+    "policy_details": {
+      "policy_file": "policy/deny-s3.rego",
+      "specific_rules": [
+        " S3 bucket test does not block public acls",
+        " S3 bucket test does not block public policy"
+      ]
+    },
+    "timing": {
+      "remediation_start_time": "2025-09-30T21:16:51.200950Z",
+      "remediation_end_time": "2025-09-30T21:16:51.201564Z",
+      "total_duration_seconds": 0.0
+    }
+  }
+]

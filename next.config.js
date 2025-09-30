@@ -7,5 +7,5 @@ const nextConfig = {
  
 module.exports = {
   // ... rest of the configuration.
-  output: "standalone",
+  // output: "standalone",
 };

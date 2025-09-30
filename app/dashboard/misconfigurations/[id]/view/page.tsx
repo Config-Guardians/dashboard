@@ -1,6 +1,6 @@
 import { fetchMisconfigById } from "@/app/lib/data";
 import { notFound } from "next/navigation";
-import { formatDate, formatDateTime } from "@/app/lib/utils";
+import { formatDate, formatDateTime, extractProvider } from "@/app/lib/utils";
 import Image from "next/image";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
@@ -21,10 +21,10 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
       <div className="flex items-center gap-4 mb-4">
         <h2 className="text-xl font-semibold">Provider:</h2>
-        {misconfig.provider ? (
+        {extractProvider(misconfig.patched_content) ? (
           <Image
-            src={`/providers/${misconfig.provider.toLowerCase()}.png`}
-            alt={misconfig.provider}
+            src={`/providers/${extractProvider(misconfig.patched_content)}.png`}
+            alt={extractProvider(misconfig.patched_content)}
             width={40}
             height={40}
             className="object-contain"
@@ -96,8 +96,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         <h2 className="text-xl font-semibold mb-2">Policy Details</h2>
         <ul className="list-disc list-inside">
           <li>Policy File: {misconfig.policy_details.policy_file}</li>
-          <li>Rule: {misconfig.policy_details.specific_rule}</li>
-          <li>Required Value: {misconfig.policy_details.required_value}</li>
+          {misconfig.policy_details.specific_rules.map(
+            (rule: string, index: number) => (
+              <li key={index}>{rule}</li>
+            )
+          )}
         </ul>
       </div>
 
@@ -106,7 +109,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         <h2 className="text-xl font-semibold mb-2">Timing</h2>
         <p>Start: {formatDateTime(misconfig.timing.remediation_start_time)}</p>
         <p>End: {formatDateTime(misconfig.timing.remediation_end_time)}</p>
-        <p>Total Duration (s): {misconfig.timing.total_duration_seconds}</p>
+        <p>Total Duration (s): {misconfig.timing.total_duration_seconds} seconds</p>
       </div>
     </main>
   );

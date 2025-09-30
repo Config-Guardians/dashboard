@@ -3,7 +3,7 @@ import {
   ViewMisconfig,
   DeleteMisconfig,
 } from "@/app/ui/misconfigurations/buttons";
-import { formatDate } from "@/app/lib/utils";
+import { formatDate, extractProvider } from "@/app/lib/utils";
 import { fetchFilteredMisconfigs } from "@/app/lib/data";
 
 export default async function MisconfigsTable({
@@ -29,11 +29,11 @@ export default async function MisconfigsTable({
                   <div>
                     <div className="mb-2 flex items-center">
                       <Image
-                        src={`/providers/${(misconfig.provider ?? "default").toLowerCase()}.png`}
+                        src={`/providers/${extractProvider(misconfig.patched_content)}.png`}
                         className="rounded-full"
                         width={50}
                         height={50}
-                        alt={`${misconfig.provider}'s logo`}
+                        alt={`${extractProvider(misconfig.patched_content)}'s logo`}
                       />
                       {/* <p>{misconfig.provider}</p> */}
                     </div>
@@ -90,7 +90,7 @@ export default async function MisconfigsTable({
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
                       <Image
-                        src={`/providers/${(misconfig.provider ?? "default").toLowerCase()}.png`}
+                        src={`/providers/${extractProvider(misconfig.patched_content)}.png`}
                         className="rounded-full"
                         width={50}
                         height={50}

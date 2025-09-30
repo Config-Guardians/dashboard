@@ -13,7 +13,7 @@ async function loadJSON<T>(filename: string): Promise<T> {
 }
 
 async function seedVulnReports() {
-  const reports = await loadJSON<any[]>("midterm_reports.json");
+  const reports = await loadJSON<any[]>("midterm_reports2.json");
 
   // table
   await sql`
