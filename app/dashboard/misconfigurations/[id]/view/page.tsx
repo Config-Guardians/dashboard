@@ -1,44 +1,55 @@
 import { fetchMisconfigById } from "@/app/lib/data";
 import { notFound } from "next/navigation";
-import { formatDate, formatDateTime, extractProvider } from "@/app/lib/utils";
+import { formatDate, formatDateTime } from "@/app/lib/utils";
 import Image from "next/image";
 
-export default async function Page(props: { params: Promise<{ id: string }> }) {
-  const { id } = await props.params;
-  const misconfig = await fetchMisconfigById(id);
+export default async function Page(
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id } = await params;
+  const misconfig = await fetchMisconfigById(decodeURIComponent(id));
 
   if (!misconfig) return notFound();
+  const {
+    original_filename,
+    patched_content,
+    changes_summary,
+    timing,
+    provider,
+    policy_compliance,
+    policy_details,
+    violations_analysis,
+    validation_details,
+  } = misconfig;
 
   return (
     <main className="p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">{misconfig.original_filename}</h1>
+        <h1 className="text-3xl font-bold">{original_filename}</h1>
         <p className="text-gray-500">
-          Detected: {formatDate(misconfig.date_detected)}
+          Detected: {formatDate(timing.remediation_start_time)}
         </p>
       </div>
 
       <div className="flex items-center gap-4 mb-4">
         <h2 className="text-xl font-semibold">Provider:</h2>
-        {extractProvider(misconfig.patched_content) ? (
-          <Image
-            src={`/providers/${extractProvider(misconfig.patched_content)}.png`}
-            alt={extractProvider(misconfig.patched_content)}
+        {provider
+          ? <Image
+            src={`/providers/${provider}.png`}
+            alt={provider}
             width={40}
             height={40}
             className="object-contain"
           />
-        ) : (
-          <span className="text-gray-500">Unknown</span>
-        )}
+          : <span className="text-gray-500">Unknown</span>}
       </div>
 
       {/* Patched Content */}
       <div className="rounded-lg bg-white p-4 shadow">
         <h2 className="text-xl font-semibold mb-2">Patched Content</h2>
         <pre className="whitespace-pre-wrap text-sm bg-gray-100 p-3 rounded overflow-x-auto">
-          {misconfig.patched_content}
+          {patched_content}
         </pre>
       </div>
 
@@ -48,13 +59,13 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         <ul className="list-disc list-inside">
           <li>
             Violations Detected:{" "}
-            {misconfig.policy_compliance.violations_detected}
+            {policy_compliance.violations_detected}
           </li>
           <li>
-            Validation Status: {misconfig.policy_compliance.validation_status}
+            Validation Status: {policy_compliance.validation_status}
           </li>
           <li>
-            Policy File Used: {misconfig.policy_compliance.policy_file_used}
+            Policy File Used: {policy_compliance.policy_file_used}
           </li>
         </ul>
       </div>
@@ -62,11 +73,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       {/* Changes Summary */}
       <div className="rounded-lg bg-white p-4 shadow">
         <h2 className="text-xl font-semibold mb-2">Changes Summary</h2>
-        <p>Total Changes: {misconfig.changes_summary.total_changes}</p>
+        <p>Total Changes: {changes_summary.total_changes}</p>
         <ul className="list-disc list-inside">
-          {misconfig.changes_summary.changes_detail.map((change, index) => (
+          {changes_summary.changes_detail.map(({ type, description }, index) => (
             <li key={index}>
-              <strong>{change.type}</strong>: {change.description}
+              <strong>{type}</strong>: {description}
             </li>
           ))}
         </ul>
@@ -75,7 +86,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       {/* Violations Analysis */}
       <div className="rounded-lg bg-white p-4 shadow">
         <h2 className="text-xl font-semibold mb-2">Violations Analysis</h2>
-        <p>{misconfig.violations_analysis.raw_violations}</p>
+        <p>{violations_analysis.raw_violations}</p>
       </div>
 
       {/* Validation Details */}
@@ -83,11 +94,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         <h2 className="text-xl font-semibold mb-2">Validation Details</h2>
         <p>Original File Validation:</p>
         <pre className="whitespace-pre-wrap text-sm bg-gray-100 p-2 rounded mb-2">
-          {misconfig.validation_details.original_file_validation}
+          {validation_details.original_file_validation}
         </pre>
         <p>Patched File Validation:</p>
         <pre className="whitespace-pre-wrap text-sm bg-gray-100 p-2 rounded">
-          {misconfig.validation_details.patched_file_validation}
+          {validation_details.patched_file_validation}
         </pre>
       </div>
 
@@ -95,21 +106,17 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       <div className="rounded-lg bg-white p-4 shadow">
         <h2 className="text-xl font-semibold mb-2">Policy Details</h2>
         <ul className="list-disc list-inside">
-          <li>Policy File: {misconfig.policy_details.policy_file}</li>
-          {misconfig.policy_details.specific_rules.map(
-            (rule: string, index: number) => (
-              <li key={index}>{rule}</li>
-            )
-          )}
+          <li>Policy File: {policy_details.policy_file}</li>
+          {policy_details.specific_rules.map((rule, index) => <li key={index}>{rule}</li>,)}
         </ul>
       </div>
 
       {/* Timing */}
       <div className="rounded-lg bg-white p-4 shadow">
         <h2 className="text-xl font-semibold mb-2">Timing</h2>
-        <p>Start: {formatDateTime(misconfig.timing.remediation_start_time)}</p>
-        <p>End: {formatDateTime(misconfig.timing.remediation_end_time)}</p>
-        <p>Total Duration (s): {misconfig.timing.total_duration_seconds} seconds</p>
+        <p>Start: {formatDateTime(timing.remediation_start_time)}</p>
+        <p>End: {formatDateTime(timing.remediation_end_time)}</p>
+        <p>Total Duration (s): {timing.total_duration_seconds} seconds</p>
       </div>
     </main>
   );
