@@ -8,11 +8,9 @@ type TestSummary = {
 };
 
 export type Misconfig = {
-  id: string; // database generated ID from postgres
   original_filename: string;
   patched_content: string;
   provider: string;
-  // date_detected: string; // ISO datetime string
   policy_compliance: {
     violations_detected: number;
     validation_status: "PASSED" | "FAILED";
@@ -47,8 +45,13 @@ export type Misconfig = {
 };
 
 // for misconfiguration table view
-export type MisconfigPreview = Pick<Misconfig, "id" | "patched_content" | "provider" | "original_filename" | "timing">
+export type MisconfigPreview =
+  & Pick<
+    Misconfig,
+    "patched_content" | "provider" | "original_filename" | "timing"
+  >
+  & { id: string };
 
 export type BackendError = {
-  errors: Record<"code" | "id" | "status" | "title" | "detail", string>[]
-}
+  errors: Record<"code" | "id" | "status" | "title" | "detail", string>[];
+};

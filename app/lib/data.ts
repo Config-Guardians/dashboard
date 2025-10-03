@@ -21,7 +21,14 @@ export async function fetchFilteredMisconfigs(
 
   return fetch(
     `${HACHIWARE_URL}/report?${misconfigPreviewFields}`,
-  ).then<{ data: { attributes: Omit<MisconfigPreview, "provider" | "id">, id: string }[] }>((res) => res.json())
+  ).then<
+    {
+      data: {
+        attributes: Omit<MisconfigPreview, "provider" | "id">;
+        id: string;
+      }[];
+    }
+  >((res) => res.json())
     .then(
       ({ data }) =>
         data.map(({ attributes, id }) => ({
@@ -52,10 +59,16 @@ export async function fetchFilteredMisconfigs(
 }
 
 export async function fetchMisconfigPages(query: string) {
-  return fetch(`${HACHIWARE_URL}/report?${new URLSearchParams({ "page[count]": "true", "page[limit]": "1", "fields[report]": "created_at" })}`)
-    .then<{ meta: { page: { total: number } } }>(res => res.json())
+  return fetch(
+    `${HACHIWARE_URL}/report?${new URLSearchParams({
+      "page[count]": "true",
+      "page[limit]": "1",
+      "fields[report]": "created_at",
+    })}`,
+  )
+    .then<{ meta: { page: { total: number } } }>((res) => res.json())
     .then(({ meta: { page: { total } } }) => total)
-    .then(entries => Math.ceil(entries / ITEMS_PER_PAGE))
+    .then((entries) => Math.ceil(entries / ITEMS_PER_PAGE));
   // try {
   //   const data = await sql`
   //     SELECT COUNT(*)
@@ -75,23 +88,33 @@ export async function fetchMisconfigPages(query: string) {
   // }
 }
 
-type FetchMisconfig = { attributes: Omit<Misconfig, "provider" | "id">, id: string }
+type FetchMisconfig = {
+  data: {
+    attributes: Omit<Misconfig, "provider" | "id">;
+    id: string;
+  };
+};
 
-export async function fetchMisconfigById(
+export function fetchMisconfigById(
   id: string,
 ): Promise<Misconfig | null> {
   return fetch(`${HACHIWARE_URL}/report/${encodeURIComponent(id)}`)
-    .then<{ data: FetchMisconfig | BackendError }>((req) => req.json())
-    .then(({ data }) => {
-      if ("errors" in data) {
-        throw new Error(JSON.stringify(data))
+    .then<FetchMisconfig | BackendError>((req) => req.json())
+    .then((res) => {
+      if ("errors" in res) {
+        throw new Error(JSON.stringify(res));
       }
-      return { ...data.attributes, id: data.id, provider: extractProvider(data.attributes.patched_content) }
+      const { data: { attributes, id } } = res;
+      return {
+        ...attributes,
+        id,
+        provider: extractProvider(attributes.patched_content),
+      };
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Database Error:", error);
       throw new Error("Failed to fetch misconfiguration.");
-    })
+    });
   // try {
   //   const data = await sql<Misconfig[]>`
   //     SELECT
