@@ -102,7 +102,8 @@ export function fetchMisconfigById(
     .then<FetchMisconfig | BackendError>((req) => req.json())
     .then((res) => {
       if ("errors" in res) {
-        throw new Error(JSON.stringify(res));
+        console.error("API Error:", res);
+        return null
       }
       const { data: { attributes, id } } = res;
       return {
