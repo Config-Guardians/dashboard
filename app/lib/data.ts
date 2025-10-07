@@ -11,6 +11,7 @@ const misconfigPreviewFields = new URLSearchParams({
     "original_filename",
     "patched_content",
   ].join(","),
+  "page[limit]": ITEMS_PER_PAGE.toString(),
 });
 
 export async function fetchFilteredMisconfigs(
@@ -19,16 +20,15 @@ export async function fetchFilteredMisconfigs(
 ): Promise<MisconfigPreview[]> {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
-  return fetch(
-    `${HACHIWARE_URL}/report?${misconfigPreviewFields}`,
-  ).then<
-    {
-      data: {
-        attributes: Omit<MisconfigPreview, "provider" | "id">;
-        id: string;
-      }[];
-    }
-  >((res) => res.json())
+  return fetch(`${HACHIWARE_URL}/report${query ? `/filter/${query}` : ""}?${misconfigPreviewFields}&page[offset]=${offset}`)
+    .then<
+      {
+        data: {
+          attributes: Omit<MisconfigPreview, "provider" | "id">;
+          id: string;
+        }[];
+      }
+    >((res) => res.json())
     .then(
       ({ data }) =>
         data.map(({ attributes, id }) => ({
@@ -58,14 +58,14 @@ export async function fetchFilteredMisconfigs(
   // `;
 }
 
+const countMisconfigPages = new URLSearchParams({
+  "page[count]": "true",
+  "page[limit]": "1",
+  "fields[report]": "created_at",
+});
+
 export async function fetchMisconfigPages(query: string) {
-  return fetch(
-    `${HACHIWARE_URL}/report?${new URLSearchParams({
-      "page[count]": "true",
-      "page[limit]": "1",
-      "fields[report]": "created_at",
-    })}`,
-  )
+  return fetch(`${HACHIWARE_URL}/report${query ? `/filter/${query}` : ""}?${countMisconfigPages}`)
     .then<{ meta: { page: { total: number } } }>((res) => res.json())
     .then(({ meta: { page: { total } } }) => total)
     .then((entries) => Math.ceil(entries / ITEMS_PER_PAGE));
@@ -95,7 +95,7 @@ type FetchMisconfig = {
   };
 };
 
-export function fetchMisconfigById(
+export async function fetchMisconfigById(
   id: string,
 ): Promise<Misconfig | null> {
   return fetch(`${HACHIWARE_URL}/report/${encodeURIComponent(id)}`)
@@ -103,7 +103,7 @@ export function fetchMisconfigById(
     .then((res) => {
       if ("errors" in res) {
         console.error("API Error:", res);
-        return null
+        return null;
       }
       const { data: { attributes, id } } = res;
       return {
