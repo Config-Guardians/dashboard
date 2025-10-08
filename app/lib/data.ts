@@ -4,7 +4,7 @@ import { env } from "node:process";
 
 const { HACHIWARE_URL } = env;
 
-const ITEMS_PER_PAGE = 6;
+export const ITEMS_PER_PAGE = 6;
 const misconfigPreviewFields = new URLSearchParams({
   "fields[report]": [
     "timing",

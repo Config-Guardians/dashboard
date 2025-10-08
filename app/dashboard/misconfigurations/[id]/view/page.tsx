@@ -37,17 +37,13 @@ export default async function Page(
 
       <div className="flex items-center gap-4 mb-4">
         <h2 className="text-xl font-semibold">Provider:</h2>
-        {provider
-          ? (
-            <Image
-              src={`/providers/${provider}.png`}
-              alt={provider}
-              width={40}
-              height={40}
-              className="object-contain"
-            />
-          )
-          : <span className="text-gray-500">Unknown</span>}
+        <Image
+          src={`/providers/${provider}.png`}
+          alt={provider}
+          width={40}
+          height={40}
+          className="object-contain"
+        />
       </div>
 
       {/* Patched Content */}

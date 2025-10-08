@@ -2,6 +2,7 @@ import Image from "next/image";
 import { DeleteMisconfig, ViewMisconfig } from "./buttons";
 import { formatDate } from "@/app/lib/utils";
 import { MisconfigPreview } from "@/app/lib/definitions";
+import Headers from "@/app/dashboard/misconfigurations/theaders";
 
 export default function LargeMisconfigsTable(
   { misconfigs, className }: {
@@ -12,26 +13,7 @@ export default function LargeMisconfigsTable(
   return (
     <div className={className}>
       <table className="min-w-full text-gray-900">
-        <thead className="rounded-lg text-left text-sm font-normal">
-          <tr>
-            {["Provider", "Resource", "Misconfiguration ID", "Date"].map(
-              (text, idx) => (
-                <th key={idx}
-                  scope="col"
-                  className="px-4 py-5 font-medium"
-                >
-                  {text}
-                </th>
-              ),
-            )}
-            <th
-              scope="col"
-              className="relative py-3 pl-6 pr-3"
-            >
-              <span className="sr-only">Edit</span>
-            </th>
-          </tr>
-        </thead>
+        <Headers />
         <tbody className="bg-white">
           {misconfigs?.map((
             {
