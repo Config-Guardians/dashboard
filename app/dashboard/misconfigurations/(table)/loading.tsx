@@ -1,5 +1,5 @@
 import { ITEMS_PER_PAGE } from "@/app/lib/data";
-import Headers from "./theaders"
+import Headers from "../theaders"
 
 const rows = Array(ITEMS_PER_PAGE).fill(undefined)
 
