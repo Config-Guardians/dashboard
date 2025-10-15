@@ -1,11 +1,9 @@
 // @ts-check
- 
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
-}
- 
-module.exports = {
-  // ... rest of the configuration.
-  // output: "standalone",
+    /* config options here */
+    output: process.env.NODE_ENV === "production" ? "standalone" : undefined
 };
+
+export default nextConfig

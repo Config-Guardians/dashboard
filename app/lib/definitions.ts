@@ -1,11 +1,16 @@
 // Type definitions for data
+type TestSummary = {
+  total_tests: number;
+  passed: number;
+  warnings: number;
+  failures: number;
+  exceptions: number;
+};
 
 export type Misconfig = {
-  id: string; // database generated ID from postgres
   original_filename: string;
   patched_content: string;
-  provider?: string;
-  date_detected: string; // ISO datetime string
+  provider: string;
   policy_compliance: {
     violations_detected: number;
     validation_status: "PASSED" | "FAILED";
@@ -25,20 +30,8 @@ export type Misconfig = {
   validation_details: {
     original_file_validation: string;
     patched_file_validation: string;
-    original_tests_summary: {
-      total_tests: number;
-      passed: number;
-      warnings: number;
-      failures: number;
-      exceptions: number;
-    };
-    patched_tests_summary: {
-      total_tests: number;
-      passed: number;
-      warnings: number;
-      failures: number;
-      exceptions: number;
-    };
+    original_tests_summary: TestSummary;
+    patched_tests_summary: TestSummary;
   };
   policy_details: {
     policy_file: string;
@@ -52,10 +45,13 @@ export type Misconfig = {
 };
 
 // for misconfiguration table view
-export type MisconfigsTable = {
-  id: string;
-  patched_content: string;
-  provider?: string;
-  original_filename: string;
-  date_detected: string;
+export type MisconfigPreview =
+  & Pick<
+    Misconfig,
+    "patched_content" | "provider" | "original_filename" | "timing"
+  >
+  & { id: string };
+
+export type BackendError = {
+  errors: Record<"code" | "id" | "status" | "title" | "detail", string>[];
 };
