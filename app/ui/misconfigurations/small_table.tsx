@@ -1,8 +1,5 @@
 import Image from "next/image";
-import {
-    DeleteMisconfig,
-    ViewMisconfig,
-} from "@/app/ui/misconfigurations/buttons";
+import { ViewMisconfig } from "@/app/ui/misconfigurations/buttons";
 import { MisconfigPreview } from "@/app/lib/definitions";
 import { formatDate } from "@/app/lib/utils";
 
@@ -48,7 +45,6 @@ export default function SmallMisconfigsTable(
                         </div>
                         <div className="flex justify-end gap-2">
                             <ViewMisconfig id={id} />
-                            <DeleteMisconfig id={id} />
                         </div>
                     </div>
                 </div>

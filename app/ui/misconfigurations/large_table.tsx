@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { DeleteMisconfig, ViewMisconfig } from "./buttons";
+import { ViewMisconfig } from "./buttons";
 import { formatDate } from "@/app/lib/utils";
 import { MisconfigPreview } from "@/app/lib/definitions";
 
@@ -66,7 +66,6 @@ export default function LargeMisconfigsTable(
               </td>
               <td className="whitespace-nowrap py-3 pl-6 pr-3 flex justify-end gap-3">
                 <ViewMisconfig id={id} />
-                <DeleteMisconfig id={id} />
               </td>
             </tr>
           ))}

@@ -3,12 +3,15 @@ import { notFound } from "next/navigation";
 import { formatDate, formatDateTime } from "@/app/lib/utils";
 import Image from "next/image";
 import { AnsiUp } from "ansi-up";
+import { DownloadButton } from "@/app/ui/misconfigurations/download_button";
 
 const ansi_up = new AnsiUp();
 
-export default async function Page(
-  { params }: { params: Promise<{ id: string }> },
-) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const misconfig = await fetchMisconfigById(decodeURIComponent(id));
 
@@ -29,7 +32,13 @@ export default async function Page(
     <main className="p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">{original_filename}</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-bold">{original_filename}</h1>
+          <DownloadButton
+            data={misconfig}
+            filename={original_filename || `misconfiguration.${id}.json`}
+          />
+        </div>
         <p className="text-gray-500">
           Detected: {formatDate(timing.remediation_start_time)}
         </p>
@@ -37,17 +46,17 @@ export default async function Page(
 
       <div className="flex items-center gap-4 mb-4">
         <h2 className="text-xl font-semibold">Provider:</h2>
-        {provider
-          ? (
-            <Image
-              src={`/providers/${provider}.png`}
-              alt={provider}
-              width={40}
-              height={40}
-              className="object-contain"
-            />
-          )
-          : <span className="text-gray-500">Unknown</span>}
+        {provider ? (
+          <Image
+            src={`/providers/${provider}.png`}
+            alt={provider}
+            width={40}
+            height={40}
+            className="object-contain"
+          />
+        ) : (
+          <span className="text-gray-500">Unknown</span>
+        )}
       </div>
 
       {/* Patched Content */}
@@ -60,19 +69,11 @@ export default async function Page(
 
       {/* Policy Compliance */}
       <div className="rounded-lg bg-white p-4 shadow">
-        <h2 className="text-xl font-semibold mb-2">
-          Policy Compliance
-        </h2>
+        <h2 className="text-xl font-semibold mb-2">Policy Compliance</h2>
         <ul className="list-disc list-inside">
-          <li>
-            Violations Detected: {policy_compliance.violations_detected}
-          </li>
-          <li>
-            Validation Status: {policy_compliance.validation_status}
-          </li>
-          <li>
-            Policy File Used: {policy_compliance.policy_file_used}
-          </li>
+          <li>Violations Detected: {policy_compliance.violations_detected}</li>
+          <li>Validation Status: {policy_compliance.validation_status}</li>
+          <li>Policy File Used: {policy_compliance.policy_file_used}</li>
         </ul>
       </div>
 
@@ -81,42 +82,35 @@ export default async function Page(
         <h2 className="text-xl font-semibold mb-2">Changes Summary</h2>
         <p>Total Changes: {changes_summary.total_changes}</p>
         <ul className="list-disc list-inside">
-          {changes_summary.changes_detail.map((
-            { type, description },
-            index,
-          ) => (
-            <li key={index}>
-              <strong>{type}</strong>: {description}
-            </li>
-          ))}
+          {changes_summary.changes_detail.map(
+            ({ type, description }, index) => (
+              <li key={index}>
+                <strong>{type}</strong>: {description}
+              </li>
+            )
+          )}
         </ul>
       </div>
 
       {/* Violations Analysis */}
       <div className="rounded-lg bg-white p-4 shadow">
-        <h2 className="text-xl font-semibold mb-2">
-          Violations Analysis
-        </h2>
+        <h2 className="text-xl font-semibold mb-2">Violations Analysis</h2>
         <p
           dangerouslySetInnerHTML={{
-            __html: ansi_up.ansi_to_html(
-              violations_analysis.raw_violations,
-            ),
+            __html: ansi_up.ansi_to_html(violations_analysis.raw_violations),
           }}
         />
       </div>
 
       {/* Validation Details */}
       <div className="rounded-lg bg-white p-4 shadow">
-        <h2 className="text-xl font-semibold mb-2">
-          Validation Details
-        </h2>
+        <h2 className="text-xl font-semibold mb-2">Validation Details</h2>
         <p>Original File Validation:</p>
         <pre
           className="whitespace-pre-wrap text-sm bg-gray-100 p-2 rounded mb-2"
           dangerouslySetInnerHTML={{
             __html: ansi_up.ansi_to_html(
-              validation_details.original_file_validation,
+              validation_details.original_file_validation
             ),
           }}
         />
@@ -125,7 +119,7 @@ export default async function Page(
           className="whitespace-pre-wrap text-sm bg-gray-100 p-2 rounded"
           dangerouslySetInnerHTML={{
             __html: ansi_up.ansi_to_html(
-              validation_details.patched_file_validation,
+              validation_details.patched_file_validation
             ),
           }}
         />
@@ -147,9 +141,7 @@ export default async function Page(
         <h2 className="text-xl font-semibold mb-2">Timing</h2>
         <p>Start: {formatDateTime(timing.remediation_start_time)}</p>
         <p>End: {formatDateTime(timing.remediation_end_time)}</p>
-        <p>
-          Total Duration (s): {timing.total_duration_seconds} seconds
-        </p>
+        <p>Total Duration (s): {timing.total_duration_seconds} seconds</p>
       </div>
     </main>
   );
