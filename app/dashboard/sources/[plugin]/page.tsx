@@ -1,7 +1,7 @@
 import { GithubForm } from "@/app/ui/sources/github-form";
 import { AwsForm } from "@/app/ui/sources/aws-form";
 
-export default async function Page({ params }: { params: { plugin: string } }) {
+export default async function Page({ params }: { params: Promise<{ plugin: string }> }) {
   const { plugin } = await params;
 
   return (

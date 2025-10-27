@@ -7,3 +7,7 @@ const nextConfig = {
 };
 
 export default nextConfig
+
+// use this if not running in container
+// const nextConfig = {};
+// export default nextConfig;
