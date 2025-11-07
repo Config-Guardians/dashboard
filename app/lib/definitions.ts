@@ -7,7 +7,12 @@ type TestSummary = {
   exceptions: number;
 };
 
-export type Misconfig = {
+export type Misconfig = |
+{
+  type: "cloud";
+  command: string;
+} | {
+  type: "code";
   original_filename: string;
   patched_content: string;
   provider: string;
@@ -44,12 +49,15 @@ export type Misconfig = {
   };
 };
 
+type yes<T extends Misconfig> = T["type"] extends "code" ? "yes" : "no"
+
+type test = yes<{ type: "cloud" }>
+
 // for misconfiguration table view
-export type MisconfigPreview =
-  & Pick<
-    Misconfig,
-    "patched_content" | "provider" | "original_filename" | "timing"
-  >
+export type MisconfigPreview<T extends Misconfig> = Pick<
+  T,
+  T["type"] extends "code" ? ("patched_content" | "provider" | "original_filename" | "timing") : "command"
+>
   & { id: string };
 
 export type BackendError = {
