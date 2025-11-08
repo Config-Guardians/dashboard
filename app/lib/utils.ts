@@ -35,6 +35,8 @@ export const formatDate = (
   dateStr: string | Date,
   locale: string = "en-US"
 ): string => {
+  if (!dateStr) return "";
+  if (dateStr == "") return "";
   const date = typeof dateStr === "string" ? new Date(dateStr) : dateStr;
 
   const options: Intl.DateTimeFormatOptions = {

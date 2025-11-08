@@ -12,19 +12,17 @@ export default async function Page({
   const misconfig = await fetchMisconfigById(decodeURIComponent(id));
 
   if (!misconfig) return notFound();
+  
+  const type = misconfig.type;
 
-  const type = misconfig.type || "cloud";
-
-  // Switch based on type (TODO: change to misconfig.type when schema changes)
+  // switch based on type: code or cloud
   switch (type) {
     case "code":
       return <CodeMisconfigView misconfig={misconfig} id={id} />;
 
     case "cloud":
-      // return <CloudMisconfigView misconfig={misconfig} id={id} />;
-      return <CloudMisconfigView />;
+      return <CloudMisconfigView misconfig={misconfig} id={id}/>;
 
-    // TODO: change type to misconfig.type when schema changes
     default:
       return (
         <main className="p-6">

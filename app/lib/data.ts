@@ -11,6 +11,7 @@ const misconfigPreviewFields = new URLSearchParams({
     "timing",
     "original_filename",
     "patched_content",
+    "command"
   ].join(","),
   "page[limit]": ITEMS_PER_PAGE.toString(),
 });
@@ -32,11 +33,15 @@ export async function fetchFilteredMisconfigs(
     >((res) => res.json())
     .then(
       ({ data }) =>
-        data.map(({ attributes, id }) => ({
+        data.map(({ attributes, id }) => {
+        const sourceText = attributes.patched_content || attributes.command || "";
+
+        return {
           ...attributes,
           id,
-          provider: extractProvider(attributes.patched_content),
-        })),
+          provider: extractProvider(sourceText),
+        };
+      })
     ).catch((error) => {
       console.error("Database Error:", error);
       throw new Error("Failed to fetch misconfigurations.");
@@ -96,27 +101,89 @@ type FetchMisconfig = {
   };
 };
 
+// TO REVIEW: IDK why the previous one broke with the new misconfig union 
+// can maybe fix if have time but here's a vibe coded one that works
 export async function fetchMisconfigById(
   id: string,
 ): Promise<Misconfig | null> {
-  return fetch(`${HACHIWARE_URL}/report/${encodeURIComponent(id)}`)
-    .then<FetchMisconfig | BackendError>((req) => req.json())
-    .then((res) => {
-      if ("errors" in res) {
-        console.error("API Error:", res);
-        return null;
-      }
-      const { data: { attributes, id } } = res;
+  try {
+    const res = await fetch(`${HACHIWARE_URL}/report/${encodeURIComponent(id)}`);
+    const json = await res.json();
+
+    if (!json || json.errors) {
+      console.error("API Error:", json);
+      return null;
+    }
+
+    const attributes = json.data?.attributes;
+    const fetchedId = json.data?.id ?? id;
+
+    if (!attributes) {
+      console.error("Malformed API response:", json);
+      return null;
+    }
+
+    // pick whichever field is available to extract provider
+    const sourceText =
+      (attributes.patched_content ?? attributes.command ?? "") as string;
+    const provider = extractProvider(sourceText);
+
+    // handle based on type
+    if (attributes.type === "cloud") {
       return {
-        ...attributes,
-        id,
-        provider: extractProvider(attributes.patched_content),
+        id: fetchedId,
+        provider,
+        type: "cloud",
+        command: attributes.command ?? "",
       };
-    })
-    .catch((error) => {
-      console.error("Database Error:", error);
-      throw new Error("Failed to fetch misconfiguration.");
-    });
+    }
+
+    if (attributes.type === "code") {
+      return {
+        id: fetchedId,
+        provider,
+        type: "code",
+        original_filename: attributes.original_filename ?? "unknown",
+        patched_content: attributes.patched_content ?? "",
+        policy_compliance: attributes.policy_compliance,
+        changes_summary: attributes.changes_summary,
+        violations_analysis: attributes.violations_analysis,
+        validation_details: attributes.validation_details,
+        policy_details: attributes.policy_details,
+        timing: attributes.timing,
+      };
+    }
+
+    // fallback for unknown type
+    console.warn("Unknown misconfig type:", attributes.type);
+    return null;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch misconfiguration.");
+  }
+
+// export async function fetchMisconfigById(
+//   id: string,
+// ): Promise<Misconfig | null> {
+//   return fetch(`${HACHIWARE_URL}/report/${encodeURIComponent(id)}`)
+//     .then<FetchMisconfig | BackendError>((req) => req.json())
+//     .then((res) => {
+//       if ("errors" in res) {
+//         console.error("API Error:", res);
+//         return null;
+//       }
+//       const { data: { attributes, id } } = res;
+//       return {
+//         ...attributes,
+//         id,
+//         provider: extractProvider(attributes.patched_content || attributes.command || ""),
+//       };
+//     })
+//     .catch((error) => {
+//       console.error("Database Error:", error);
+//       throw new Error("Failed to fetch misconfiguration.");
+//     });
+//   }
   // try {
   //   const data = await sql<Misconfig[]>`
   //     SELECT

@@ -81,7 +81,9 @@ export function CodeMisconfigView({
         <p>Total Changes: {changes_summary.total_changes}</p>
         <ul className="list-disc list-inside">
           {changes_summary.changes_detail.map(
-            ({ type, description }, index) => (
+            ({ type, description }: { type: string; description: string }, 
+              index: number
+            ) => (
               <li key={index}>
                 <strong>{type}</strong>: {description}
               </li>
@@ -128,7 +130,7 @@ export function CodeMisconfigView({
         <h2 className="text-xl font-semibold mb-2">Policy Details</h2>
         <ul className="list-disc list-inside">
           <li>Policy File: {policy_details.policy_file}</li>
-          {policy_details.specific_rules.map((rule, index) => (
+          {policy_details.specific_rules.map((rule: string, index: number) => (
             <li key={index}>{rule}</li>
           ))}
         </ul>

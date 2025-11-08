@@ -1,7 +1,6 @@
 import Pagination from "@/app/ui/misconfigurations/pagination";
 import Search from "@/app/ui/search";
 import Table from "@/app/ui/misconfigurations/table";
-import { lusitana } from "@/app/ui/fonts";
 import { MisconfigsTableSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";
 import { fetchMisconfigPages } from "@/app/lib/data";
@@ -20,7 +19,7 @@ export default async function Page(props: {
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
-        <h1 className={`${lusitana.className} text-2xl`}>Misconfigurations</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Misconfigurations</h1>
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <Search placeholder="Search misconfigurations..." />
