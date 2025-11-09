@@ -24,12 +24,11 @@ export function CardsSkeleton() {
       <CardSkeleton />
       <CardSkeleton />
       <CardSkeleton />
-      <CardSkeleton />
     </>
   );
 }
 
-export function RevenueChartSkeleton() {
+export function ChartSkeleton() {
   return (
     <div className={`${shimmer} relative w-full overflow-hidden md:col-span-4`}>
       <div className="mb-4 h-8 w-36 rounded-md bg-gray-100" />
@@ -92,10 +91,9 @@ export default function DashboardSkeleton() {
         <CardSkeleton />
         <CardSkeleton />
         <CardSkeleton />
-        <CardSkeleton />
       </div>
       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-        <RevenueChartSkeleton />
+        <ChartSkeleton />
         <LatestMisconfigsSkeleton />
       </div>
     </>
