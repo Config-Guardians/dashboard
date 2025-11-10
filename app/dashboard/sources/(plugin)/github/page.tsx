@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function GithubForm() {
+export default function Page() {
   const [token, setToken] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const router = useRouter();
@@ -58,11 +58,10 @@ token = "${token}"
 
       <button
         disabled={status === "loading"}
-        className={`rounded-md px-4 py-2 rounded text-white ${
-          status === "loading"
-            ? "bg-blue-400 cursor-not-allowed"
-            : "bg-blue-600 hover:bg-blue-700"
-        }`}
+        className={`px-4 py-2 rounded text-white ${status === "loading"
+          ? "bg-blue-400 cursor-not-allowed"
+          : "bg-blue-600 hover:bg-blue-700"
+          }`}
         type="submit"
       >
         {status === "loading" ? "Connecting..." : "Connect to GitHub"}
@@ -71,12 +70,12 @@ token = "${token}"
       {status === "success" && (
         <p className="text-green-600 text-sm">
           ✅ Successfully connected! Redirecting...
-          </p>
+        </p>
       )}
       {status === "error" && (
         <p className="text-red-600 text-sm">
           ❌ Failed to connect. Check your token.
-          </p>
+        </p>
       )}
     </form>
   );

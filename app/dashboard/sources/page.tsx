@@ -5,7 +5,6 @@ const providers = [
   {
     name: "GitHub",
     key: "github",
-    href: "/dashboard/sources/github",
   },
   {
     name: "AWS",
@@ -24,21 +23,21 @@ export default function Page() {
           </h1>
 
           <div className="flex flex-wrap gap-8 justify-center">
-            {providers.map((provider) => (
+            {providers.map(({ name, key }) => (
               <Link
-                key={provider.key}
-                href={provider.href}
+                key={key}
+                href={`/dashboard/sources/${key}`}
                 className="group flex flex-col items-center justify-center w-64 h-64 bg-white border rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-200 p-6"
               >
                 <Image
-                  src={`/providers/${provider.key}.png`}
+                  src={`/providers/${key}.png`}
                   width={100}
                   height={100}
-                  alt={provider.name}
+                  alt={name}
                   className="object-contain mb-4 transition-transform duration-200 group-hover:scale-110"
                 />
                 <span className="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
-                  {provider.name}
+                  {name}
                 </span>
               </Link>
             ))}

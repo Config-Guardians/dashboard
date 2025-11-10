@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function AwsForm() {
+export default function Page() {
   const [accessKey, setAccessKey] = useState("");
   const [secretKey, setSecretKey] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -73,11 +73,10 @@ secret_key = "${secretKey}"
 
       <button
         disabled={status === "loading"}
-        className={`rounded-md px-4 py-2 rounded text-white ${
-          status === "loading"
-            ? "bg-blue-400 cursor-not-allowed"
-            : "bg-blue-600 hover:bg-blue-700"
-        }`}
+        className={`px-4 py-2 rounded text-white ${status === "loading"
+          ? "bg-blue-400 cursor-not-allowed"
+          : "bg-blue-600 hover:bg-blue-700"
+          }`}
         type="submit"
       >
         {status === "loading" ? "Connecting..." : "Connect to AWS"}

@@ -31,7 +31,7 @@ export default function LargeMisconfigsTable({
                   height={50}
                   alt={`${provider}'s logo`}
                 />
-                <p className="text-gray-700 font-medium">{type === "code" ? misconfig.original_filename : "Yes"}</p>
+                <p className="text-gray-700 font-medium">{type === "code" ? misconfig.original_filename : misconfig.name}</p>
               </div>
               <p className="text-sm text-gray-500">
                 {formatDate(id)}

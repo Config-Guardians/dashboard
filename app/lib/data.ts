@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 const { HACHIWARE_URL } = env;
 
-const ITEMS_PER_PAGE = 6;
+export const ITEMS_PER_PAGE = 6;
 const misconfigPreviewFields = new URLSearchParams({
   "fields[report]": [
     "timing",
@@ -83,7 +83,12 @@ export async function fetchMisconfigById(
       if ("errors" in data)
         return null
       const { data: { attributes } } = data
-      return { ...attributes, provider: extractProvider(attributes.type === "code" ? attributes.provider : attributes.name), id }
+      return {
+        ...attributes,
+        provider: extractProvider(attributes.type === "code"
+          ? attributes.patched_content :
+          attributes.command), id
+      }
     })
 }
 

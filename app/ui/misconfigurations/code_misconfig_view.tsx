@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { AnsiUp } from "ansi-up";
 import { formatDate, formatDateTime } from "@/app/lib/utils";
@@ -17,7 +15,7 @@ export function CodeMisconfigView({
     original_filename,
     patched_content,
     changes_summary,
-    timing,
+    timing: { remediation_end_time, remediation_start_time, total_duration_seconds },
     provider,
     policy_compliance,
     policy_details,
@@ -37,7 +35,7 @@ export function CodeMisconfigView({
           />
         </div>
         <p className="text-gray-500">
-          Detected: {formatDate(timing.remediation_start_time)}
+          Detected: {formatDate(remediation_start_time)}
         </p>
       </div>
 
@@ -136,9 +134,9 @@ export function CodeMisconfigView({
       {/* Timing */}
       <div className="rounded-lg bg-white p-4 shadow">
         <h2 className="text-xl font-semibold mb-2">Timing</h2>
-        <p>Start: {formatDateTime(timing.remediation_start_time)}</p>
-        <p>End: {formatDateTime(timing.remediation_end_time)}</p>
-        <p>Total Duration (s): {timing.total_duration_seconds} seconds</p>
+        <p>Start: {formatDateTime(remediation_start_time)}</p>
+        <p>End: {formatDateTime(remediation_end_time)}</p>
+        <p>Total Duration (s): {total_duration_seconds} seconds</p>
       </div>
     </main>
   );
