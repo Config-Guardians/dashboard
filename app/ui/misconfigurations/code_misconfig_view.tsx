@@ -4,15 +4,14 @@ import Image from "next/image";
 import { AnsiUp } from "ansi-up";
 import { formatDate, formatDateTime } from "@/app/lib/utils";
 import { DownloadJSON } from "@/app/ui/misconfigurations/download_json";
+import { CodeMisconfig } from "@/app/lib/definitions";
 
 const ansi_up = new AnsiUp();
 
 export function CodeMisconfigView({
   misconfig,
-  id,
 }: {
-  misconfig: any;
-  id: string;
+  misconfig: CodeMisconfig;
 }) {
   const {
     original_filename,
@@ -23,7 +22,7 @@ export function CodeMisconfigView({
     policy_compliance,
     policy_details,
     violations_analysis,
-    validation_details,
+    validation_details
   } = misconfig;
 
   return (
@@ -34,7 +33,7 @@ export function CodeMisconfigView({
           <h1 className="text-3xl font-bold">{original_filename}</h1>
           <DownloadJSON
             data={misconfig}
-            filename={original_filename || `misconfiguration.${id}.json`}
+            filename={`${original_filename}.json`}
           />
         </div>
         <p className="text-gray-500">
@@ -81,9 +80,7 @@ export function CodeMisconfigView({
         <p>Total Changes: {changes_summary.total_changes}</p>
         <ul className="list-disc list-inside">
           {changes_summary.changes_detail.map(
-            ({ type, description }: { type: string; description: string }, 
-              index: number
-            ) => (
+            ({ type, description }, index) => (
               <li key={index}>
                 <strong>{type}</strong>: {description}
               </li>
@@ -130,7 +127,7 @@ export function CodeMisconfigView({
         <h2 className="text-xl font-semibold mb-2">Policy Details</h2>
         <ul className="list-disc list-inside">
           <li>Policy File: {policy_details.policy_file}</li>
-          {policy_details.specific_rules.map((rule: string, index: number) => (
+          {policy_details.specific_rules.map((rule, index) => (
             <li key={index}>{rule}</li>
           ))}
         </ul>

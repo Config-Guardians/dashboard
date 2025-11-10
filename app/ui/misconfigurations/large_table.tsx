@@ -14,15 +14,11 @@ export default function LargeMisconfigsTable({
     <div className={className}>
       {misconfigs?.map(
         (
-          {
-            id,
-            original_filename,
-            provider,
-            timing,
-          },
+          misconfig,
           idx
-        ) => (
-          <div
+        ) => {
+          const { id, provider, type } = misconfig
+          return <div
             key={idx}
             className="mb-3 w-full rounded-lg bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
           >
@@ -35,10 +31,10 @@ export default function LargeMisconfigsTable({
                   height={50}
                   alt={`${provider}'s logo`}
                 />
-                <p className="text-gray-700 font-medium">{original_filename}</p>
+                <p className="text-gray-700 font-medium">{type === "code" ? misconfig.original_filename : "Yes"}</p>
               </div>
               <p className="text-sm text-gray-500">
-                {formatDate(timing?.remediation_start_time ?? "")}
+                {formatDate(id)}
               </p>
             </div>
 
@@ -49,7 +45,7 @@ export default function LargeMisconfigsTable({
               </div>
             </div>
           </div>
-        )
+        }
       )}
     </div>
   );

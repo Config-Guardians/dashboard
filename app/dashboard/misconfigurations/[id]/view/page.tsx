@@ -5,23 +5,21 @@ import { CloudMisconfigView } from "@/app/ui/misconfigurations/cloud_misconfig_v
 
 export default async function Page({
   params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+}: PageProps<"/dashboard/misconfigurations/[id]/view">) {
   const { id } = await params;
-  const misconfig = await fetchMisconfigById(decodeURIComponent(id));
+  const misconfig = use(fetchMisconfigById(decodeURIComponent(id)));
 
   if (!misconfig) return notFound();
-  
+
   const type = misconfig.type;
 
   // switch based on type: code or cloud
   switch (type) {
     case "code":
-      return <CodeMisconfigView misconfig={misconfig} id={id} />;
+      return <CodeMisconfigView misconfig={misconfig} />;
 
     case "cloud":
-      return <CloudMisconfigView misconfig={misconfig} id={id}/>;
+      return <CloudMisconfigView misconfig={misconfig} />;
 
     default:
       return (

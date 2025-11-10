@@ -4,19 +4,18 @@ import Image from "next/image";
 import { formatDate } from "@/app/lib/utils";
 import { DownloadMD } from "@/app/ui/misconfigurations/download_md";
 import ReactMarkdown from "react-markdown";
+import { CloudMisconfig } from "@/app/lib/definitions";
 
 export function CloudMisconfigView({
   misconfig,
-  id,
 }: {
-  misconfig: any;
-  id: string;
+  misconfig: CloudMisconfig;
 }) {
   const {
     command,
+    name,
     provider,
-    timing = null,
-    original_filename = null,
+    id
   } = misconfig;
 
   return (
@@ -25,18 +24,16 @@ export function CloudMisconfigView({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-bold">
-            {original_filename || "Cloud Misconfiguration Report"}
+            {name || "Cloud Misconfiguration Report"}
           </h1>
           <DownloadMD
             content={command}
-            filename={original_filename || `misconfiguration.${id}.md`}
+            filename={`${name}-${id}.md`}
           />
         </div>
         <p className="text-gray-500">
           Detected:{" "}
-          {timing?.remediation_start_time
-            ? formatDate(timing.remediation_start_time)
-            : "Unknown"}
+          {formatDate(id)}
         </p>
       </div>
 

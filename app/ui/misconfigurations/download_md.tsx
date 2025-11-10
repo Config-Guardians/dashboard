@@ -15,7 +15,7 @@ export function DownloadMD({
 
     const a = document.createElement("a");
     a.href = url;
-    a.download = filename.endsWith(".md") ? filename : `${filename}.md`;
+    a.download = filename;
     a.click();
 
     URL.revokeObjectURL(url);
