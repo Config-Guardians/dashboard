@@ -6,20 +6,7 @@ import { use } from "react";
 export const dynamic = "force-dynamic";
 
 export default function DashboardOverviewPage() {
-  let misconfigs;
-  try {
-    misconfigs = use(fetchFilteredMisconfigs("", 1));
-  } catch (error) {
-    console.error(error);
-    return (
-      <div className="space-y-6 p-6">
-        <div className="grid grid-cols-3 gap-4">
-          <CardsSkeleton />
-        </div>
-        <ChartSkeleton />
-      </div>
-    );
-  }
+  const misconfigs = use(fetchFilteredMisconfigs("", 1));
 
   if (!misconfigs) {
     return (
