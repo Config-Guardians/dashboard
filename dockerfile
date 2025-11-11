@@ -31,6 +31,8 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED=1
 
 ENV NODE_ENV=production
+ARG NEXT_PUBLIC_HACHIWARE_URL=http://localhost:4000/api
+ENV NEXT_PUBLIC_HACHIWARE_URL=$NEXT_PUBLIC_HACHIWARE_URL
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \
