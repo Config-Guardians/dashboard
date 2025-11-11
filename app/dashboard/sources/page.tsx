@@ -9,7 +9,6 @@ const providers = [
   {
     name: "AWS",
     key: "aws",
-    href: "/dashboard/sources/aws",
   },
 ];
 
