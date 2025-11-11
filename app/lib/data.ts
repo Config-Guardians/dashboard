@@ -85,9 +85,10 @@ export async function fetchMisconfigById(
       const { data: { attributes } } = data
       return {
         ...attributes,
+        id,
         provider: extractProvider(attributes.type === "code"
-          ? attributes.patched_content :
-          attributes.command), id
+          ? attributes.patched_content
+          : attributes.command)
       }
     })
 }
