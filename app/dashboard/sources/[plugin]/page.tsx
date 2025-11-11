@@ -15,17 +15,18 @@ export default function Page({ params }: PageProps<"/dashboard/sources/[plugin]"
   async function handleSubmit(formData: FormData) {
     setStatus("loading")
 
-    const data = formData.entries().map(entry => entry.join(" = ")).toArray().join("\n");
+    const lowercasePlugin = plugin.toLowerCase();
+    const data = formData.entries().map(([k, v]) => `${k}="${v}"`).toArray().join("\n");
     const res = await fetch(`${NEXT_PUBLIC_HACHIWARE_URL}/plugin`, {
       method: "POST",
       headers: { "Content-Type": "application/vnd.api+json" },
       body: JSON.stringify({
         data: {
-          configuration: `connection "${plugin}" {
-plugin = "${plugin}"
+          configuration: `connection "${lowercasePlugin}" {
+plugin = "${lowercasePlugin}"
 ${data}
 }`,
-          plugin,
+          plugin: lowercasePlugin,
         },
       }),
     });
