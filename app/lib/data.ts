@@ -3,7 +3,7 @@ import { extractProvider } from "./utils";
 import { env } from "node:process";
 import { NextResponse } from "next/server";
 
-const { HACHIWARE_URL } = env;
+const { NEXT_PUBLIC_HACHIWARE_URL } = env;
 
 export const ITEMS_PER_PAGE = 6;
 const misconfigPreviewFields = new URLSearchParams({
@@ -24,7 +24,7 @@ export async function fetchFilteredMisconfigs(
 ): Promise<MisconfigPreview[]> {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
-  return fetch(`${HACHIWARE_URL}/report${query ? `/filter/${query}` : ""}?${misconfigPreviewFields}&page[offset]=${offset}`)
+  return fetch(`${NEXT_PUBLIC_HACHIWARE_URL}/report${query ? `/filter/${query}` : ""}?${misconfigPreviewFields}&page[offset]=${offset}`)
     .then<
       {
         data: {
@@ -59,7 +59,7 @@ const countMisconfigPages = new URLSearchParams({
 });
 
 export async function fetchMisconfigPages(query: string) {
-  return fetch(`${HACHIWARE_URL}/report${query ? `/filter/${query}` : ""}?${countMisconfigPages}`)
+  return fetch(`${NEXT_PUBLIC_HACHIWARE_URL}/report${query ? `/filter/${query}` : ""}?${countMisconfigPages}`)
     .then<{ meta: { page: { total: number } } }>((res) => res.json())
     .then(({ meta: { page: { total } } }) => total)
     .then((entries) => Math.ceil(entries / ITEMS_PER_PAGE));
@@ -77,7 +77,7 @@ type FetchMisconfig = {
 export async function fetchMisconfigById(
   id: string,
 ): Promise<Misconfig | null> {
-  return fetch(`${HACHIWARE_URL}/report/${encodeURIComponent(id)}`)
+  return fetch(`${NEXT_PUBLIC_HACHIWARE_URL}/report/${encodeURIComponent(id)}`)
     .then<FetchMisconfig | BackendError>(res => res.json())
     .then(data => {
       if ("errors" in data)
@@ -97,7 +97,7 @@ export async function postPlugin(req: Request) {
   const body = await req.json();
 
   try {
-    const res = await fetch(`${HACHIWARE_URL}/plugin`, {
+    const res = await fetch(`${NEXT_PUBLIC_HACHIWARE_URL}/plugin`, {
       method: "POST",
       headers: { "Content-Type": "application/vnd.api+json" },
       body: JSON.stringify(body),
