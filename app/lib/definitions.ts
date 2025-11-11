@@ -35,11 +35,11 @@ export type CodeMisconfig = {
     }[];
   };
   violations_analysis: {
-    raw_violations: string;
+    raw_violations?: string;
   };
   validation_details: {
-    original_file_validation: string;
-    patched_file_validation: string;
+    original_file_validation?: string;
+    patched_file_validation?: string;
     original_tests_summary: TestSummary;
     patched_tests_summary: TestSummary;
   };

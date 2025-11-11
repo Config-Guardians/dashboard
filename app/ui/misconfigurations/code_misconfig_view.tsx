@@ -92,7 +92,7 @@ export function CodeMisconfigView({
         <h2 className="text-xl font-semibold mb-2">Violations Analysis</h2>
         <p
           dangerouslySetInnerHTML={{
-            __html: ansi_up.ansi_to_html(violations_analysis.raw_violations),
+            __html: ansi_up.ansi_to_html(violations_analysis.raw_violations || "No details"),
           }}
         />
       </div>
@@ -105,7 +105,7 @@ export function CodeMisconfigView({
           className="whitespace-pre-wrap text-sm bg-gray-100 p-2 rounded mb-2"
           dangerouslySetInnerHTML={{
             __html: ansi_up.ansi_to_html(
-              validation_details.original_file_validation
+              validation_details.original_file_validation || "No details"
             ),
           }}
         />
@@ -114,7 +114,7 @@ export function CodeMisconfigView({
           className="whitespace-pre-wrap text-sm bg-gray-100 p-2 rounded"
           dangerouslySetInnerHTML={{
             __html: ansi_up.ansi_to_html(
-              validation_details.patched_file_validation
+              validation_details.patched_file_validation || "No details"
             ),
           }}
         />
