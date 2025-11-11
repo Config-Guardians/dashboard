@@ -1,4 +1,4 @@
-export default function Layout({ children }: LayoutProps<"/dashboard/sources">) {
+export default function Layout({ children }: LayoutProps<"/dashboard/sources/[plugin]">) {
   return (
     <div className="flex flex-col items-center min-h-screen p-8">
       <p className="text-sm text-gray-600 italic mb-6 text-center">
