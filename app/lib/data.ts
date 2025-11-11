@@ -1,7 +1,6 @@
 import { BackendError, Misconfig, MisconfigPreview } from "./definitions";
 import { extractProvider } from "./utils";
 import { env } from "node:process";
-import { NextResponse } from "next/server";
 
 const { NEXT_PUBLIC_HACHIWARE_URL } = env;
 
@@ -91,22 +90,4 @@ export async function fetchMisconfigById(
           : attributes.command)
       }
     })
-}
-
-export async function postPlugin(req: Request) {
-  const body = await req.json();
-
-  try {
-    const res = await fetch(`${NEXT_PUBLIC_HACHIWARE_URL}/plugin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/vnd.api+json" },
-      body: JSON.stringify(body),
-    });
-
-    const data = await res.json();
-    return NextResponse.json(data, { status: res.status });
-  } catch (err) {
-    console.error("Error proxying to backend:", err);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
-  }
 }

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { use, useState } from "react";
 import { pluginFields } from "./plugins";
 
-const { NEXT_PUBLIC_HACHIWARE_URL } = process.env
+const NEXT_PUBLIC_HACHIWARE_URL = process.env.NEXT_PUBLIC_HACHIWARE_URL
 
 export default function Page({ params }: PageProps<"/dashboard/sources/[plugin]">) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
