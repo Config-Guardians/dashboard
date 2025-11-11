@@ -1,24 +1,12 @@
 import { fetchFilteredMisconfigs } from "@/app/lib/data";
 import { CardsSkeleton, ChartSkeleton } from "@/app/ui/skeletons";
 import BarChartProviders from "./BarChartProviders";
+import { use } from "react";
 
 export const dynamic = "force-dynamic";
 
-export default async function DashboardOverviewPage() {
-  let misconfigs;
-  try {
-    misconfigs = await fetchFilteredMisconfigs("", 1);
-  } catch (error) {
-    console.error(error);
-    return (
-      <div className="space-y-6 p-6">
-        <div className="grid grid-cols-3 gap-4">
-          <CardsSkeleton />
-        </div>
-        <ChartSkeleton />
-      </div>
-    );
-  }
+export default function DashboardOverviewPage() {
+  const misconfigs = use(fetchFilteredMisconfigs("", 1));
 
   if (!misconfigs) {
     return (

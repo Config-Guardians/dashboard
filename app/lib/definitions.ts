@@ -7,13 +7,15 @@ type TestSummary = {
   exceptions: number;
 };
 
-export type Misconfig = |
-{
+export type CloudMisconfig = {
   type: "cloud";
   command: string;
   id: string;
+  name: string;
   provider: string;
-} | {
+}
+
+export type CodeMisconfig = {
   type: "code";
   id: string;
   original_filename: string;
@@ -50,28 +52,22 @@ export type Misconfig = |
     remediation_end_time: string;
     total_duration_seconds: number;
   };
-};
+}
 
-type yes<T extends Misconfig> = T["type"] extends "code" ? "yes" : "no"
-
-// type test = yes<{ type: "cloud" }>
+export type Misconfig = CloudMisconfig | CodeMisconfig;
 
 // for misconfiguration table view
-// export type MisconfigPreview<T extends Misconfig> = Pick<
-//   T,
-//   T["type"] extends "code" ? ("patched_content" | "provider" | "original_filename" | "timing") : "command"
-// >
-//   & { id: string };
-
-export type MisconfigPreview = {
-  id: string;
-  type: "code" | "cloud";
-  provider?: string;
-  patched_content?: string;
-  command?: string;
-  original_filename?: string;
-  timing?: { remediation_start_time?: string };
-};
+export type MisconfigPreview =
+  CloudMisconfig
+  | Pick<
+    CodeMisconfig,
+    | "patched_content"
+    | "provider"
+    | "original_filename"
+    | "timing"
+    | "type"
+    | "id"
+  >;
 
 export type BackendError = {
   errors: Record<"code" | "id" | "status" | "title" | "detail", string>[];

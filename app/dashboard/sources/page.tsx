@@ -1,18 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { pluginFields } from "./[plugin]/plugins";
 
-const providers = [
-  {
-    name: "GitHub",
-    key: "github",
-    href: "/dashboard/sources/github",
-  },
-  {
-    name: "AWS",
-    key: "aws",
-    href: "/dashboard/sources/aws",
-  },
-];
+const providers = Object.keys(pluginFields);
 
 export default function Page() {
   return (
@@ -24,21 +14,21 @@ export default function Page() {
           </h1>
 
           <div className="flex flex-wrap gap-8 justify-center">
-            {providers.map((provider) => (
+            {providers.map(name => (
               <Link
-                key={provider.key}
-                href={provider.href}
+                key={name.toLowerCase()}
+                href={`/dashboard/sources/${name}`}
                 className="group flex flex-col items-center justify-center w-64 h-64 bg-white border rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-200 p-6"
               >
                 <Image
-                  src={`/providers/${provider.key}.png`}
+                  src={`/providers/${name.toLowerCase()}.png`}
                   width={100}
                   height={100}
-                  alt={provider.name}
+                  alt={name}
                   className="object-contain mb-4 transition-transform duration-200 group-hover:scale-110"
                 />
                 <span className="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
-                  {provider.name}
+                  {name}
                 </span>
               </Link>
             ))}

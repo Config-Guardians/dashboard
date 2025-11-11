@@ -1,27 +1,26 @@
+import { use } from "react";
 import { fetchMisconfigById } from "@/app/lib/data";
 import { notFound } from "next/navigation";
 import { CodeMisconfigView } from "@/app/ui/misconfigurations/code_misconfig_view";
 import { CloudMisconfigView } from "@/app/ui/misconfigurations/cloud_misconfig_view";
 
-export default async function Page({
+export default function Page({
   params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const misconfig = await fetchMisconfigById(decodeURIComponent(id));
+}: PageProps<"/dashboard/misconfigurations/[id]/view">) {
+  const { id } = use(params);
+  const misconfig = use(fetchMisconfigById(decodeURIComponent(id)));
 
   if (!misconfig) return notFound();
-  
-  const type = misconfig.type;
+
+  const { type } = misconfig;
 
   // switch based on type: code or cloud
   switch (type) {
     case "code":
-      return <CodeMisconfigView misconfig={misconfig} id={id} />;
+      return <CodeMisconfigView misconfig={misconfig} />;
 
     case "cloud":
-      return <CloudMisconfigView misconfig={misconfig} id={id}/>;
+      return <CloudMisconfigView misconfig={misconfig} />;
 
     default:
       return (
