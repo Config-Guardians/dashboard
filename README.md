@@ -15,6 +15,9 @@ Development instructions:
 4. Run `npm start` to test the production build locally
 5. Voila
 
+### Docker image
+A pre-built Docker image for this repo is hosted on [Docker Hub](https://hub.docker.com/repository/docker/zachareee/cg-dashboard)
+
 <p align="center">
   <img width="75%" src="https://pbs.twimg.com/media/Dv2ClZBWkAAJ05P.jpg:large"
   alt="Banner">
