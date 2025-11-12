@@ -31,7 +31,7 @@ export async function fetchFilteredMisconfigs(
           id: string;
         }[];
       }
-    >((res) => res.json())
+    >(res => res.json())
     .then(
       ({ data }) =>
         data.map(({ attributes, id }) => {
@@ -71,8 +71,6 @@ type FetchMisconfig = {
   };
 };
 
-// TO REVIEW: IDK why the previous one broke with the new misconfig union 
-// can maybe fix if have time but here's a vibe coded one that works
 export async function fetchMisconfigById(
   id: string,
 ): Promise<Misconfig | null> {

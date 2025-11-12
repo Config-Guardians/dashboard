@@ -22,16 +22,17 @@ export default function LargeMisconfigsTable({
             key={idx}
             className="mb-3 w-full rounded-lg bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
           >
-            <div className="flex justify-between items-center border-b pb-4">
-              <div className="flex items-center gap-3">
-                <Image
-                  src={`/providers/${provider}.png`}
-                  className="rounded-full"
-                  width={50}
-                  height={50}
-                  alt={`${provider}'s logo`}
-                />
+            <div className="border-b w-full flex">
+              <Image
+                src={`/providers/${provider}.png`}
+                className="rounded-full"
+                width={50}
+                height={50}
+                alt={`${provider}'s logo`}
+              />
+              <div className="overflow-hidden">
                 <p className="text-gray-700 font-medium">{type === "code" ? misconfig.original_filename : misconfig.name}</p>
+                <p className="text-sm truncate">{type === "code" ? misconfig.patched_content : misconfig.command}</p>
               </div>
               <p className="text-sm text-gray-500">
                 {formatDate(id)}
@@ -40,9 +41,7 @@ export default function LargeMisconfigsTable({
 
             <div className="flex w-full items-center justify-between pt-4">
               <p className="text-sm text-gray-500">{id}</p>
-              <div className="flex justify-end gap-2">
-                <ViewMisconfig id={id} />
-              </div>
+              <ViewMisconfig id={id} />
             </div>
           </div>
         }
