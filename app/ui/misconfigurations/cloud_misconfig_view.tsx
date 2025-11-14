@@ -74,7 +74,7 @@ export function CloudMisconfigView({
             h3: ({ children }) => (
               <h3 className="text-lg font-semibold mt-3 mb-2">{children}</h3>
             ),
-            p: ({ children }) => <p className="mb-2">{children}</p>,
+            p: ({ children }) => <div className="mb-2">{children}</div>,
             ul: ({ children }) => (
               <ul className="list-disc list-inside ml-5 mb-2">{children}</ul>
             ),
