@@ -20,10 +20,10 @@ export default function Page({ searchParams }: {
     <div className="flex items-center justify-between gap-2 mt-4 w-full">
       <Search query={query} />
     </div>
-    <div className="mt-6 inline-block w-full align-middle rounded-lg bg-gray-50 p-2 md:pt-0">
+    <div className="mt-6 inline-block w-full align-middle rounded-lg bg-gray-100 p-3">
       <SmallMisconfigsTable className="md:hidden" misconfigs={misconfigs} />
       <LargeMisconfigsTable
-        className="hidden md:inline w-full"
+        className="hidden md:inline w-full space-y-3"
         misconfigs={misconfigs}
       />
     </div>

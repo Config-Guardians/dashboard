@@ -20,7 +20,7 @@ export default function LargeMisconfigsTable({
           const { id, provider, type } = misconfig
           return <div
             key={idx}
-            className="mb-3 w-full rounded-lg bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+            className="w-full rounded-lg bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="border-b w-full flex">
               <Image
