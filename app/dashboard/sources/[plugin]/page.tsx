@@ -43,14 +43,15 @@ ${data}
     </h2>
 
     {
-      pluginFields[plugin].map(({ name, placeholder, description, type }, key) =>
+      pluginFields[plugin].map(({ name, placeholder, description, type, defaultValue }, key) =>
         <label className="block" key={key}>
           <span className="text-gray-700">{description}</span>
           <input
-            type={type}
+            type={type || "password"}
             className="border rounded p-2 w-full mt-1"
             name={name}
             placeholder={placeholder}
+            defaultValue={defaultValue || ""}
             required
           />
         </label>
