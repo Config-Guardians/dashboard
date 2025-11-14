@@ -7,12 +7,19 @@ type TestSummary = {
   exceptions: number;
 };
 
+type Timing = {
+  remediation_start_time: string;
+  remediation_end_time: string;
+  total_duration_seconds: number;
+}
+
 export type CloudMisconfig = {
   type: "cloud";
   command: string;
   id: string;
   name: string;
   provider: string;
+  timing: Timing
 }
 
 export type CodeMisconfig = {
@@ -47,11 +54,7 @@ export type CodeMisconfig = {
     policy_file: string;
     specific_rules: string[];
   };
-  timing: {
-    remediation_start_time: string;
-    remediation_end_time: string;
-    total_duration_seconds: number;
-  };
+  timing: Timing;
 }
 
 export type Misconfig = CloudMisconfig | CodeMisconfig;

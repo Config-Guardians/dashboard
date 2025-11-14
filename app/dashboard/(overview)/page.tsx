@@ -1,12 +1,12 @@
-import { fetchFilteredMisconfigs } from "@/app/lib/data";
-import { CardsSkeleton, ChartSkeleton } from "@/app/ui/skeletons";
+import { fetchMisconfigCounts } from "@/app/lib/data";
+import { CardsSkeleton } from "@/app/ui/skeletons";
 import BarChartProviders from "./BarChartProviders";
 import { use } from "react";
 
 export const dynamic = "force-dynamic";
 
 export default function DashboardOverviewPage() {
-  const misconfigs = use(fetchFilteredMisconfigs("", 1));
+  const misconfigs = use(fetchMisconfigCounts());
 
   if (!misconfigs) {
     return (
@@ -17,9 +17,9 @@ export default function DashboardOverviewPage() {
   }
 
   const counts = {
-    aws: misconfigs.filter((m) => m.provider === "aws").length,
-    gcp: misconfigs.filter((m) => m.provider === "gcp").length,
-    oracle: misconfigs.filter((m) => m.provider === "oracle").length,
+    aws: misconfigs.filter(provider => provider === "aws").length,
+    gcp: misconfigs.filter(provider => provider === "gcp").length,
+    oracle: misconfigs.filter(provider => provider === "oracle").length,
   };
 
   const cards = [

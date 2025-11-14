@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { formatDate } from "@/app/lib/utils";
+import { formatDate, formatDateTime } from "@/app/lib/utils";
 import { DownloadMD } from "@/app/ui/misconfigurations/download_md";
 import ReactMarkdown from "react-markdown";
 import { CloudMisconfig } from "@/app/lib/definitions";
@@ -15,7 +15,12 @@ export function CloudMisconfigView({
     command,
     name,
     provider,
-    id
+    id,
+    timing: {
+      remediation_end_time,
+      remediation_start_time,
+      total_duration_seconds
+    }
   } = misconfig;
 
   return (
@@ -31,10 +36,11 @@ export function CloudMisconfigView({
             filename={`${name}-${id}.md`}
           />
         </div>
-        <p className="text-gray-500">
-          Detected:{" "}
-          {formatDate(id)}
-        </p>
+        <div className="rounded-lg bg-white p-4 shadow text-gray-500">
+          <p>Start: {formatDateTime(remediation_start_time)}</p>
+          <p>End: {formatDateTime(remediation_end_time)}</p>
+          <p>Total Duration (s): {total_duration_seconds} seconds</p>
+        </div>
       </div>
 
       {/* Provider */}
