@@ -23,7 +23,7 @@ export async function fetchFilteredMisconfigs(
 ): Promise<MisconfigPreview[]> {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
-  return fetch(`${NEXT_PUBLIC_HACHIWARE_URL}/report${query ? `/filter/${query}` : ""}?${misconfigPreviewFields}&page[offset]=${offset}`)
+  return fetch(`${NEXT_PUBLIC_HACHIWARE_URL}/report${query ? `/filter/${encodeURIComponent(query)}` : ""}?${misconfigPreviewFields}&page[offset]=${offset}`)
     .then<
       {
         data: {
@@ -65,8 +65,9 @@ export async function fetchMisconfigCounts() {
 }
 
 export async function fetchMisconfigPages(query = "") {
-  return fetch(`${NEXT_PUBLIC_HACHIWARE_URL}/report${query ? `/filter/${query}` : ""}?${misconfigCountSearchParam}`)
-    .then<{ data: { attributes: MisconfigPreview }[] } & { meta: { page: { total: number } } }>(res => res.json()).then(({ meta: { page: { total } } }) => total)
+  return fetch(`${NEXT_PUBLIC_HACHIWARE_URL}/report${query ? `/filter/${encodeURIComponent(query)}` : ""}?${misconfigCountSearchParam}`)
+    .then<{ data: { attributes: MisconfigPreview }[] } & { meta: { page: { total: number } } }>(res => res.json())
+    .then(({ meta: { page: { total } } }) => total)
     .then(entries => Math.ceil(entries / ITEMS_PER_PAGE));
 }
 
