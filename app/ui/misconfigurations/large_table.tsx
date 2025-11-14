@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ViewMisconfig } from "@/app/ui/misconfigurations/buttons";
 import { MisconfigPreview } from "@/app/lib/definitions";
-import { formatDate } from "@/app/lib/utils";
+import { formatDateTime } from "@/app/lib/utils";
 
 export default function LargeMisconfigsTable({
   misconfigs,
@@ -34,13 +34,10 @@ export default function LargeMisconfigsTable({
                 <p className="text-gray-700 font-medium">{type === "code" ? misconfig.original_filename : misconfig.name}</p>
                 <p className="text-sm truncate">{type === "code" ? misconfig.patched_content : misconfig.command}</p>
               </div>
-              <p className="text-sm text-gray-500">
-                {formatDate(id)}
-              </p>
             </div>
 
             <div className="flex w-full items-center justify-between pt-4">
-              <p className="text-sm text-gray-500">{id}</p>
+              <p className="text-sm text-gray-500">{formatDateTime(id)}</p>
               <ViewMisconfig id={id} />
             </div>
           </div>
