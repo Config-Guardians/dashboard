@@ -11,14 +11,14 @@ export default function Page({ searchParams }: {
     page?: string;
   }>
 }) {
-  const { query = "", page } = use(searchParams);
-  const currentPage = Number(page) || 1;
+  const { query = "", page = "1" } = use(searchParams);
+  const currentPage = Number(page);
   const totalPages = use(fetchMisconfigPages(query));
   const misconfigs = use(fetchFilteredMisconfigs(query, currentPage));
 
   return <>
     <div className="flex items-center justify-between gap-2 mt-4 w-full">
-      <Search query={query} />
+      <Search />
     </div>
     <div className="mt-6 inline-block w-full align-middle rounded-lg bg-gray-100 p-3">
       <SmallMisconfigsTable className="md:hidden" misconfigs={misconfigs} />
