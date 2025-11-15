@@ -73,7 +73,7 @@ export const extractProvider = (
 ): string => {
   if (!patchedContent) return "default"
 
-  const providers = ["aws", "gcp", "oracle", "github"];
+  const providers = ["aws", "gcp", "oracle", "github", "spring"];
 
   // check case-insensitivity
   const lowerContent = patchedContent.toLowerCase();
