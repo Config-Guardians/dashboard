@@ -62,6 +62,7 @@ export const formatDateTime = (
     minute: "2-digit",
     second: "2-digit",
     hour12: false,
+    timeZone: "+08"
   };
 
   return new Intl.DateTimeFormat(locale, options).format(date);
