@@ -26,7 +26,7 @@ export default function HomePage() {
       {/* Right side: image */}
       <div className="mt-8 flex justify-center md:mt-0 md:w-3/5">
         <Image
-          src="/placeholder.png"
+          src="/config-guardians.jpg"
           width={600}
           height={400}
           alt="Placeholder"
